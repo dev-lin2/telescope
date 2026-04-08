@@ -204,7 +204,15 @@
 
                     clearTimeout(this.newEntriesTimeout);
 
-                    this.$router.push({query: _.assign({}, this.$route.query, {keyword: this.keyword})});
+                    this.ready = false;
+
+                    this.loadEntries((entries) => {
+                        this.entries = entries;
+
+                        this.checkForNewEntries();
+
+                        this.ready = true;
+                    });
                 });
             },
 

@@ -85,7 +85,8 @@ class EntryQueryOptions
                 ->familyHash($request->family_hash)
                 ->limit($request->take ?? 50)
                 ->afterDate($request->after_date)
-                ->beforeDate($request->before_date);
+                ->beforeDate($request->before_date)
+                ->keyword($request->keyword);
     }
 
     /**
