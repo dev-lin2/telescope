@@ -1,9 +1,13 @@
 # Laravel Telescope (Fork)
 
-Forked from [laravel/telescope](https://github.com/laravel/telescope) v4.9.6. This is **not** intended to be merged back upstream.
+Forked from [laravel/telescope](https://github.com/laravel/telescope) v4.9.6.
 
-**Base version:** v4.9.6 (PHP 7.3+ / Laravel 8.x / 9.x)
-**Branch:** `dev-master`
+This fork is maintained independently and is **not** intended to be merged back upstream.
+
+**Base version:** v4.9.6
+**PHP:** 7.3+ (tested on 7.4)
+**Laravel:** 8.x / 9.x
+**Branch:** `master`
 
 ## What's Added
 
@@ -25,7 +29,7 @@ The built-in `ClientRequestWatcher` only captures Laravel HTTP Client (Guzzle) c
 // Before
 $response = curl_exec($ch);
 
-// After
+// After — logs to Telescope's HTTP Client screen
 $response = telescope_curl_exec($ch);
 ```
 
@@ -56,7 +60,7 @@ In your project's `composer.json`:
     }
 ],
 "require": {
-    "laravel/telescope": "dev-dev-master"
+    "laravel/telescope": "dev-master"
 }
 ```
 
@@ -64,7 +68,13 @@ Then:
 ```bash
 composer update laravel/telescope
 php artisan telescope:publish
+php artisan migrate
 ```
+
+## Requirements
+
+- PHP 7.3+ (including 7.4)
+- Laravel 8.x or 9.x
 
 ## License
 
