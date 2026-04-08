@@ -200,6 +200,7 @@ class EntryModel extends Model
     protected function whereKeyword($query, EntryQueryOptions $options)
     {
         $query->when($options->keyword, function ($query, $keyword) {
+            \Log::info('Telescope keyword search', ['keyword' => $keyword, 'sql_fragment' => '%' . $keyword . '%']);
             return $query->where('content', 'like', '%' . $keyword . '%');
         });
 
