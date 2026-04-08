@@ -304,14 +304,14 @@
                    placeholder="Search Tag" v-model="tag" @input.stop="search">
 
             <div class="d-flex align-items-center ml-2" v-if="!hideSearch">
-                <input type="date" class="form-control form-control-sm"
-                       style="width: 140px;"
+                <input type="datetime-local" class="form-control form-control-sm"
+                       style="width: 190px;"
                        placeholder="From"
                        v-model="afterDate"
                        @change="searchByDate">
                 <span class="mx-1">to</span>
-                <input type="date" class="form-control form-control-sm"
-                       style="width: 140px;"
+                <input type="datetime-local" class="form-control form-control-sm"
+                       style="width: 190px;"
                        placeholder="To"
                        v-model="beforeDate"
                        @change="searchByDate">

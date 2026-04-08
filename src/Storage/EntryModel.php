@@ -168,7 +168,7 @@ class EntryModel extends Model
     protected function whereAfterDate($query, EntryQueryOptions $options)
     {
         $query->when($options->afterDate, function ($query, $afterDate) {
-            return $query->where('created_at', '>=', $afterDate . ' 00:00:00');
+            return $query->where('created_at', '>=', $afterDate);
         });
 
         return $this;
@@ -184,7 +184,7 @@ class EntryModel extends Model
     protected function whereBeforeDate($query, EntryQueryOptions $options)
     {
         $query->when($options->beforeDate, function ($query, $beforeDate) {
-            return $query->where('created_at', '<=', $beforeDate . ' 23:59:59');
+            return $query->where('created_at', '<=', $beforeDate);
         });
 
         return $this;
