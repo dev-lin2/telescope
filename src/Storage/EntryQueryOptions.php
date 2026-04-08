@@ -63,6 +63,13 @@ class EntryQueryOptions
     public $beforeDate;
 
     /**
+     * The keyword to search for in entry content.
+     *
+     * @var string|null
+     */
+    public $keyword;
+
+    /**
      * Create new entry query options from the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -192,6 +199,19 @@ class EntryQueryOptions
     public function beforeDate(?string $date)
     {
         $this->beforeDate = $date;
+
+        return $this;
+    }
+
+    /**
+     * Set the keyword to search for in entry content.
+     *
+     * @param  string|null  $keyword
+     * @return $this
+     */
+    public function keyword(?string $keyword)
+    {
+        $this->keyword = $keyword;
 
         return $this;
     }

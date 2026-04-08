@@ -15,6 +15,7 @@
         data() {
             return {
                 tag: '',
+                keyword: '',
                 afterDate: '',
                 beforeDate: '',
                 familyHash: '',
@@ -113,7 +114,8 @@
                         '&take=' + this.entriesPerRequest +
                         '&family_hash=' + this.familyHash +
                         '&after_date=' + this.afterDate +
-                        '&before_date=' + this.beforeDate
+                        '&before_date=' + this.beforeDate +
+                        '&keyword=' + this.keyword
                 ).then(response => {
                     this.lastEntryIndex = response.data.entries.length ? _.last(response.data.entries).sequence : this.lastEntryIndex;
 
@@ -140,7 +142,8 @@
                             '&take=1' +
                             '&family_hash=' + this.familyHash +
                             '&after_date=' + this.afterDate +
-                            '&before_date=' + this.beforeDate
+                            '&before_date=' + this.beforeDate +
+                            '&keyword=' + this.keyword
                     ).then(response => {
                         if (! this._isDestroyed) {
                             this.recordingStatus = response.data.status;
@@ -187,6 +190,21 @@
                     clearTimeout(this.newEntriesTimeout);
 
                     this.$router.push({query: _.assign({}, this.$route.query, {tag: this.tag})});
+                });
+            },
+
+
+            /**
+             * Search entries by keyword in content.
+             */
+            searchKeyword(){
+                this.debouncer(() => {
+                    this.hasNewEntries = false;
+                    this.lastEntryIndex = '';
+
+                    clearTimeout(this.newEntriesTimeout);
+
+                    this.$router.push({query: _.assign({}, this.$route.query, {keyword: this.keyword})});
                 });
             },
 
@@ -298,9 +316,15 @@
         <div class="card-header d-flex align-items-center justify-content-between">
             <h5>{{this.title}}</h5>
 
-            <input type="text" class="form-control w-25"
-                   v-if="!hideSearch && (tag || entries.length > 0)"
+            <input type="text" class="form-control"
+                   v-if="!hideSearch && (keyword || tag || entries.length > 0)"
                    id="searchInput"
+                   style="width: 200px;"
+                   placeholder="Search Content" v-model="keyword" @input.stop="searchKeyword">
+
+            <input type="text" class="form-control ml-2"
+                   v-if="!hideSearch && (keyword || tag || entries.length > 0)"
+                   style="width: 150px;"
                    placeholder="Search Tag" v-model="tag" @input.stop="search">
 
             <div class="d-flex align-items-center ml-2" v-if="!hideSearch">

@@ -191,6 +191,22 @@ class EntryModel extends Model
     }
 
     /**
+     * Scope the query for entries matching the given keyword in content.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @return $this
+     */
+    protected function whereKeyword($query, EntryQueryOptions $options)
+    {
+        $query->when($options->keyword, function ($query, $keyword) {
+            return $query->where('content', 'like', '%' . $keyword . '%');
+        });
+
+        return $this;
+    }
+
+    /**
      * Scope the query for the given display options.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
