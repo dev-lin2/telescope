@@ -15,6 +15,8 @@
         data() {
             return {
                 tag: '',
+                afterDate: '',
+                beforeDate: '',
                 familyHash: '',
                 entries: [],
                 ready: false,
@@ -109,7 +111,9 @@
                         '?tag=' + this.tag +
                         '&before=' + this.lastEntryIndex +
                         '&take=' + this.entriesPerRequest +
-                        '&family_hash=' + this.familyHash
+                        '&family_hash=' + this.familyHash +
+                        '&after_date=' + this.afterDate +
+                        '&before_date=' + this.beforeDate
                 ).then(response => {
                     this.lastEntryIndex = response.data.entries.length ? _.last(response.data.entries).sequence : this.lastEntryIndex;
 
@@ -134,7 +138,9 @@
                     axios.post(Telescope.basePath + '/telescope-api/' + this.resource +
                             '?tag=' + this.tag +
                             '&take=1' +
-                            '&family_hash=' + this.familyHash
+                            '&family_hash=' + this.familyHash +
+                            '&after_date=' + this.afterDate +
+                            '&before_date=' + this.beforeDate
                     ).then(response => {
                         if (! this._isDestroyed) {
                             this.recordingStatus = response.data.status;
@@ -181,6 +187,27 @@
                     clearTimeout(this.newEntriesTimeout);
 
                     this.$router.push({query: _.assign({}, this.$route.query, {tag: this.tag})});
+                });
+            },
+
+
+            /**
+             * Filter entries by date range.
+             */
+            searchByDate(){
+                this.hasNewEntries = false;
+                this.lastEntryIndex = '';
+
+                clearTimeout(this.newEntriesTimeout);
+
+                this.ready = false;
+
+                this.loadEntries((entries) => {
+                    this.entries = entries;
+
+                    this.checkForNewEntries();
+
+                    this.ready = true;
                 });
             },
 
@@ -275,6 +302,20 @@
                    v-if="!hideSearch && (tag || entries.length > 0)"
                    id="searchInput"
                    placeholder="Search Tag" v-model="tag" @input.stop="search">
+
+            <div class="d-flex align-items-center ml-2" v-if="!hideSearch">
+                <input type="date" class="form-control form-control-sm"
+                       style="width: 140px;"
+                       placeholder="From"
+                       v-model="afterDate"
+                       @change="searchByDate">
+                <span class="mx-1">to</span>
+                <input type="date" class="form-control form-control-sm"
+                       style="width: 140px;"
+                       placeholder="To"
+                       v-model="beforeDate"
+                       @change="searchByDate">
+            </div>
         </div>
 
         <p v-if="recordingStatus !== 'enabled'" class="mt-0 mb-0 disabled-watcher d-flex align-items-center">

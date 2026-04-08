@@ -49,6 +49,20 @@ class EntryQueryOptions
     public $limit = 50;
 
     /**
+     * The date that all retrieved entries should be after.
+     *
+     * @var string|null
+     */
+    public $afterDate;
+
+    /**
+     * The date that all retrieved entries should be before.
+     *
+     * @var string|null
+     */
+    public $beforeDate;
+
+    /**
      * Create new entry query options from the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -62,7 +76,9 @@ class EntryQueryOptions
                 ->beforeSequence($request->before)
                 ->tag($request->tag)
                 ->familyHash($request->family_hash)
-                ->limit($request->take ?? 50);
+                ->limit($request->take ?? 50)
+                ->afterDate($request->after_date)
+                ->beforeDate($request->before_date);
     }
 
     /**
@@ -150,6 +166,32 @@ class EntryQueryOptions
     public function limit(int $limit)
     {
         $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * Set the date that all retrieved entries should be after.
+     *
+     * @param  string|null  $date
+     * @return $this
+     */
+    public function afterDate(?string $date)
+    {
+        $this->afterDate = $date;
+
+        return $this;
+    }
+
+    /**
+     * Set the date that all retrieved entries should be before.
+     *
+     * @param  string|null  $date
+     * @return $this
+     */
+    public function beforeDate(?string $date)
+    {
+        $this->beforeDate = $date;
 
         return $this;
     }

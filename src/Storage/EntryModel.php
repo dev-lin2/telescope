@@ -69,6 +69,8 @@ class EntryModel extends Model
                 ->whereTag($query, $options)
                 ->whereFamilyHash($query, $options)
                 ->whereBeforeSequence($query, $options)
+                ->whereAfterDate($query, $options)
+                ->whereBeforeDate($query, $options)
                 ->filter($query, $options);
 
         return $query;
@@ -151,6 +153,38 @@ class EntryModel extends Model
     {
         $query->when($options->beforeSequence, function ($query, $beforeSequence) {
             return $query->where('sequence', '<', $beforeSequence);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Scope the query for entries after the given date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @return $this
+     */
+    protected function whereAfterDate($query, EntryQueryOptions $options)
+    {
+        $query->when($options->afterDate, function ($query, $afterDate) {
+            return $query->where('created_at', '>=', $afterDate . ' 00:00:00');
+        });
+
+        return $this;
+    }
+
+    /**
+     * Scope the query for entries before the given date.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Laravel\Telescope\Storage\EntryQueryOptions  $options
+     * @return $this
+     */
+    protected function whereBeforeDate($query, EntryQueryOptions $options)
+    {
+        $query->when($options->beforeDate, function ($query, $beforeDate) {
+            return $query->where('created_at', '<=', $beforeDate . ' 23:59:59');
         });
 
         return $this;
