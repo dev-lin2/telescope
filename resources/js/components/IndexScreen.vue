@@ -114,8 +114,8 @@
                         '&take=' + this.entriesPerRequest +
                         '&family_hash=' + this.familyHash +
                         '&after_date=' + this.afterDate +
-                        '&before_date=' + this.beforeDate +
-                        '&keyword=' + this.keyword
+                        '&before_date=' + this.beforeDate,
+                        {keyword: this.keyword}
                 ).then(response => {
                     this.lastEntryIndex = response.data.entries.length ? _.last(response.data.entries).sequence : this.lastEntryIndex;
 
@@ -142,8 +142,8 @@
                             '&take=1' +
                             '&family_hash=' + this.familyHash +
                             '&after_date=' + this.afterDate +
-                            '&before_date=' + this.beforeDate +
-                            '&keyword=' + this.keyword
+                            '&before_date=' + this.beforeDate,
+                            {keyword: this.keyword}
                     ).then(response => {
                         if (! this._isDestroyed) {
                             this.recordingStatus = response.data.status;
