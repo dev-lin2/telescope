@@ -71,6 +71,7 @@ class EntryModel extends Model
                 ->whereBeforeSequence($query, $options)
                 ->whereAfterDate($query, $options)
                 ->whereBeforeDate($query, $options)
+                ->whereKeyword($query, $options)
                 ->filter($query, $options);
 
         return $query;
@@ -200,7 +201,6 @@ class EntryModel extends Model
     protected function whereKeyword($query, EntryQueryOptions $options)
     {
         $query->when($options->keyword, function ($query, $keyword) {
-            \Log::info('Telescope keyword search', ['keyword' => $keyword, 'sql_fragment' => '%' . $keyword . '%']);
             return $query->where('content', 'like', '%' . $keyword . '%');
         });
 
